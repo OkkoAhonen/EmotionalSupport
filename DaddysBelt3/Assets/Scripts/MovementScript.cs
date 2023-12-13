@@ -2,22 +2,35 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    public float moveSpeed = 50f; // Aseta haluttu liikkumisnopeus
+    public float normaaliNopeus = 50f; // Normaali liikkumisnopeus
+    public float juoksuNopeus = 100f; // Nopeampi juoksu
 
     private Rigidbody2D rb;
+    private float currentSpeed; // Nykyinen nopeus
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentSpeed = normaaliNopeus; // Alustetaan nykyinen nopeus normaaliksi
     }
 
     void Update()
     {
         // Liikkuminen
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float vaakaSyote = Input.GetAxis("Horizontal");
+        float pystySyote = Input.GetAxis("Vertical");
 
-        Vector2 movement = new Vector2(horizontalInput, verticalInput) * moveSpeed * Time.deltaTime;
-        rb.MovePosition(rb.position + movement);
+        Vector2 liike = new Vector2(vaakaSyote, pystySyote) * currentSpeed * Time.deltaTime;
+        rb.MovePosition(rb.position + liike);
+
+        // Juoksu
+        if (Input.GetKeyDown(KeyCode.LeftShift)) 
+        {
+            currentSpeed = juoksuNopeus;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            currentSpeed = normaaliNopeus;
+        }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    public float normaaliNopeus = 50f; // Normaali liikkumisnopeus
+    public float normaaliNopeus = 10f; // Normaali liikkumisnopeus
     public float juoksuNopeus = 100f; // Nopeampi juoksu
 
     private Rigidbody2D rb;
@@ -14,7 +14,7 @@ public class MovementScript : MonoBehaviour
         currentSpeed = normaaliNopeus; // Alustetaan nykyinen nopeus normaaliksi
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Liikkuminen
         float vaakaSyote = Input.GetAxis("Horizontal");

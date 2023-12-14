@@ -5,6 +5,8 @@ public class MovementScript : MonoBehaviour
     public float normaaliNopeus = 10f; // Normaali liikkumisnopeus
     public float juoksuNopeus = 100f; // Nopeampi juoksu
 
+    public float stamina = 100f;
+
     private Rigidbody2D rb;
     private float currentSpeed; // Nykyinen nopeus
 
@@ -26,11 +28,18 @@ public class MovementScript : MonoBehaviour
         // Juoksu
         if (Input.GetKeyDown(KeyCode.LeftShift)) 
         {
+            staminaDrain();
+
             currentSpeed = juoksuNopeus;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             currentSpeed = normaaliNopeus;
         }
+    }
+
+    void staminaDrain()
+    {
+        stamina -= 1;
     }
 }

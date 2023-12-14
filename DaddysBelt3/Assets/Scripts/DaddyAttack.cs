@@ -8,7 +8,8 @@ public class DaddyAttack : MonoBehaviour
 {
     public float drunkMeter, attackRange, turnSpeed, angle, throwStrength;
     public bool canSeePlayer, canAttack;
-    public Vector3 lastSeen, direction;
+    public Vector3 direction;
+    public static Vector3 lastSeen;
     public GameObject objectInHand;
 
     private GameObject player;
@@ -22,6 +23,10 @@ public class DaddyAttack : MonoBehaviour
 
     void Update()
     {
+        if (lastSeen == transform.position)
+        {
+            lastSeen = Vector3.zero;
+        }
         int numHits = Physics2D.Raycast(transform.position, player.transform.position - transform.position, contactFilter, hits);
         Debug.Log(numHits);
         if (hits[0])

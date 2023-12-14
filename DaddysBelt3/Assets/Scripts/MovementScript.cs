@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    public float normaaliNopeus = 10f; // Normaali liikkumisnopeus
-    public float juoksuNopeus = 100f; // Nopeampi juoksu
+    public float normaaliNopeus = 4f; // Normaali liikkumisnopeus
+    public float juoksuNopeus = 12f; // Nopeampi juoksu
     public float stamina = 100f;
-    public float staminaVahinko = 10f; // Kuinka paljon staminaa v‰hennet‰‰n per juoksukerta
+    public float staminaVahinko = 8f; // Kuinka paljon staminaa v‰hennet‰‰n per juoksukerta
     public float staminaPalautus = 5f; // Kuinka paljon staminaa palautuu, kun ei juosta
 
     private Rigidbody2D rb;

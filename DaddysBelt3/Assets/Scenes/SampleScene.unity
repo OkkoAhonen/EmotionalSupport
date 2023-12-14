@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 525289597}
   - component: {fileID: 525289596}
   m_Layer: 0
-  m_Name: Collirit
+  m_Name: Colliderit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -578,9 +578,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de47dd0c4e4131145a651c88f8e227e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normaaliNopeus: 10
-  juoksuNopeus: 100
+  normaaliNopeus: 5
+  juoksuNopeus: 10
   stamina: 100
+  staminaVahinko: 25
+  staminaPalautus: 5
 --- !u!1 &1553743132
 GameObject:
   m_ObjectHideFlags: 0

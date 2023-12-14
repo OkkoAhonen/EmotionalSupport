@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/MainMenu 1.unity
+    guid: 338f400009c31984caa74c1b9a8205a6
+  - enabled: 1
+    path: Assets/Scenes/PeliMaailma.unity
+    guid: d9c3bef322cd99c48838c9166c2e792b
   m_configObjects: {}

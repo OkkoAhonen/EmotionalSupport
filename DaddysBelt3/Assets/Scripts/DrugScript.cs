@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class DrugScript : MonoBehaviour
 {
-    public float stunDuration, moveSpeed, hitDetectionSize, angle;
+    //aseta vain stunDuration
+    public float moveSpeed, stunDuration;
+    private float hitDetectionSize, angle;
     public Vector3 throwDir;
 
     private GameObject player;
@@ -13,6 +15,7 @@ public class DrugScript : MonoBehaviour
     private void Awake()
     {
         player = GameObject.Find("Player");
+        angle = DaddyAttack.angle;
     }
 
     void Update()

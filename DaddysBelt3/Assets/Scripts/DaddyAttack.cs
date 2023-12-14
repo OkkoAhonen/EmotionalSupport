@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 
 public class DaddyAttack : MonoBehaviour
 {
-    public float drunkMeter, attackRange, turnSpeed, angle, throwStrength;
+    public float drunkMeter, attackRange, turnSpeed, throwStrength;
+    public static float angle;
     public bool canSeePlayer, canAttack;
     public Vector3 direction;
     public static Vector3 lastSeen;
@@ -34,7 +35,12 @@ public class DaddyAttack : MonoBehaviour
             if (hits[0].collider.gameObject.CompareTag("Player"))
             {
                 PlayerSpotted();
+                StopCoroutine(FindPlayer());
             }
+        }
+        else
+        {
+            StartCoroutine(FindPlayer());
         }
     }
 
@@ -48,6 +54,7 @@ public class DaddyAttack : MonoBehaviour
 
     public void PlayerSpotted()
     {
+        //cancel findPlayer
         canSeePlayer = true;
         lastSeen = player.transform.position;
         LookTowards(lastSeen);
@@ -61,6 +68,12 @@ public class DaddyAttack : MonoBehaviour
         }
     }
 
+    IEnumerator FindPlayer()
+    {
+        yield return new WaitForSeconds(5 * drunkMeter);
+        PlayerSpotted();
+
+    }
     IEnumerator DadAttack()
     {
         // Huutaa jotain
@@ -75,7 +88,6 @@ public class DaddyAttack : MonoBehaviour
         {// Heitt‰‰ huumeet k‰dest‰
             GameObject thrownObject = Instantiate(objectInHand, transform.position, Quaternion.identity);
             DrugScript objScript = thrownObject.GetComponent<DrugScript>();
-            objScript.angle = angle;
             objScript.throwDir = direction;
             objScript.moveSpeed = throwStrength * drunkMeter;
         }

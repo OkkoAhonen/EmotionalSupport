@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerEffects : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private GameObject player;
+
+    private void Awake()
     {
-        
+        player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator PlayerStunned(float stunDuration)
     {
-        
+        MovementScript moveScript = player.GetComponent<MovementScript>();
+        moveScript.enabled = false;
+        yield return new WaitForSeconds(stunDuration);
+        moveScript.enabled = true;
     }
+
 }

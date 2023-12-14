@@ -6,12 +6,14 @@ using UnityEngine.UIElements;
 
 public class DaddyAttack : MonoBehaviour
 {
-    public float maxRayDistance, drunkMeter, attackRange;
-    public bool canSeePlayer;
+    public float drunkMeter, attackRange, turnSpeed, angle;
+    public bool canSeePlayer, canAttack;
     public Vector3 lastSeen;
+    public GameObject objectInHand;
 
     private GameObject player;
-    Ray ray;
+    public ContactFilter2D contactFilter;
+    RaycastHit2D [] hits = new RaycastHit2D [3];
 
     private void Start()
     {
@@ -20,24 +22,35 @@ public class DaddyAttack : MonoBehaviour
 
     void Update()
     {
-
-        Vector3 raycastDir = player.transform.position - transform.position;
-        ray = new Ray(transform.position, raycastDir);
-        Physics.Raycast(ray, out RaycastHit hit, maxRayDistance);
-        if (hit.collider.gameObject.CompareTag("Player"))
+        int numHits = Physics2D.Raycast(transform.position, player.transform.position - transform.position, contactFilter, hits);
+        Debug.Log(numHits);
+        if (hits[0])
         {
-            PlayerSpotted();
+            if (hits[0].collider.gameObject.CompareTag("Player"))
+            {
+                PlayerSpotted();
+            }
         }
+    }
+
+    public void LookTowards(Vector3 target)
+    {
+        Vector2 direction = target - transform.position;
+        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed * drunkMeter * Time.deltaTime);
     }
 
     public void PlayerSpotted()
     {
         canSeePlayer = true;
         lastSeen = player.transform.position;
-        float dp = Mathf.Sqrt(transform.position.x + transform.position.y);
-        float pp = Mathf.Sqrt(lastSeen.x + lastSeen.y);
-        Debug.Log("dp: "+dp+" pp: "+pp);
-        if (dp - pp < attackRange)
+        LookTowards(lastSeen);
+        // -1 on pelaajan ja is‰n koosta pois
+        float distance = (transform.position - player.transform.position).magnitude - 1;
+
+        Debug.Log("distance: " + distance);
+        if (distance < attackRange && !canAttack)
         {
             DadAttack();
         }
@@ -46,13 +59,19 @@ public class DaddyAttack : MonoBehaviour
     IEnumerator DadAttack()
     {
         // Huutaa jotain
+        canAttack = false;
+        Debug.Log("Dad Attack triggered!");
         yield return new WaitForSeconds(1 * drunkMeter);
+        GameObject thrownObject = Instantiate(objectInHand, transform.position, Quaternion.identity);
+        thrownObject.GetComponent<DrugScript>().angle = angle;
+        canAttack = true;
 
     }
 
     IEnumerator DadGetStunned(float stunTime)
     {
         // Vittu! (tai jotain)
+        Debug.Log("Dad got stunned!");
         yield return new WaitForSeconds(stunTime);
 
     }
@@ -60,6 +79,7 @@ public class DaddyAttack : MonoBehaviour
     IEnumerator DadUseDrugs(float drugUseTime, float drunkAdd)
     {
         //Juomis ‰‰ni‰
+        Debug.Log("Dad used drugs!");
         yield return new WaitForSeconds(drugUseTime);
         drunkMeter += drunkAdd;
     }

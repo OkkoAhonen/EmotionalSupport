@@ -6,9 +6,9 @@ using UnityEngine.UIElements;
 
 public class DaddyAttack : MonoBehaviour
 {
-    public float drunkMeter, attackRange, turnSpeed, angle;
+    public float drunkMeter, attackRange, turnSpeed, angle, throwStrength;
     public bool canSeePlayer, canAttack;
-    public Vector3 lastSeen;
+    public Vector3 lastSeen, direction;
     public GameObject objectInHand;
 
     private GameObject player;
@@ -35,7 +35,7 @@ public class DaddyAttack : MonoBehaviour
 
     public void LookTowards(Vector3 target)
     {
-        Vector2 direction = target - transform.position;
+        direction = (target - transform.position).normalized;
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed * drunkMeter * Time.deltaTime);
@@ -62,8 +62,18 @@ public class DaddyAttack : MonoBehaviour
         canAttack = false;
         Debug.Log("Dad Attack triggered!");
         yield return new WaitForSeconds(1 * drunkMeter);
-        GameObject thrownObject = Instantiate(objectInHand, transform.position, Quaternion.identity);
-        thrownObject.GetComponent<DrugScript>().angle = angle;
+        if (objectInHand == null)
+        {
+
+        }
+        else
+        {// Heitt‰‰ huumeet k‰dest‰
+            GameObject thrownObject = Instantiate(objectInHand, transform.position, Quaternion.identity);
+            DrugScript objScript = thrownObject.GetComponent<DrugScript>();
+            objScript.angle = angle;
+            objScript.throwDir = direction;
+            objScript.moveSpeed = throwStrength * drunkMeter;
+        }
         canAttack = true;
 
     }
